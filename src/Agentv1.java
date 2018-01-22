@@ -17,8 +17,8 @@ public class Agentv1 implements Agent {
 		 * of the robots position. The robot is turned off initially, so don't forget to
 		 * turn it on.
 		 */
-		int x=-5, y=-5, width=-5, height=-5;
-		String orientation ="", type="";
+		int x = -5, y = -5, width = -5, height = -5;
+		String orientation = "", type = "";
 		List<Point> obstacles = new ArrayList();
 		List<Point> dirt = new ArrayList();
 		Pattern perceptNamePattern = Pattern.compile("\\(\\s*([^\\s]+).*");
@@ -41,29 +41,40 @@ public class Agentv1 implements Agent {
 					}
 				}
 				if (perceptName.equals("ORIENTATION")) {
-					Matcher m = Pattern.compile("\\(\\s*ORIENTATION\\s+([0-9]+)\\s+([0-9]+)\\s*\\)").matcher(percept);
+					Matcher m = Pattern.compile("\\(\\s*ORIENTATION\\s+(NORTH|SOUTH|EAST|WEST)\\s*\\)").matcher(percept);
 					if (m.matches()) {
 						orientation = m.group(1);
 					}
 				}
 				if (perceptName.equals("AT")) {
-					Matcher m = Pattern.compile("\\(\\s*ORIENTATION\\s+([0-9]+)\\s+([0-9]+)\\s*\\)").matcher(percept);
+					Matcher m = Pattern.compile("\\(\\s*AT\\s+(DIRT|OBSTACLE)+\\s+([0-9]+)\\s+([0-9]+)\\s*\\)").matcher(percept);
 					if (m.matches()) {
 						type = m.group(1);
-						if (perceptName.equals("DIRT")) {
-							dirt.add(new Point(Integer.parseInt(m.group(2)),Integer.parseInt(m.group(3))));
+						if (type.equals("DIRT")) {
+							dirt.add(new Point(Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3))));
 						} else {
-							obstacles.add(new Point(Integer.parseInt(m.group(2)),Integer.parseInt(m.group(3))));
+							obstacles.add(new Point(Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3))));
 						}
 					}
 				}
 			} else {
 				System.err.println("strange percept that does not match pattern: " + percept);
 			}
-			//public Environment(int width, int height, Point homeloc, String homeOr,List<Point> obstacles)
-			Environment en = new Environment(width,height,new Point(x,y),orientation,obstacles);
-			//public EnviroState(List<Point> dirts, List<Point> Agents, String AgentOr, boolean On)
-			EnviroState enState = new EnviroState(dirt,new Point(x,y),orientation,false);
+
+		} // public Environment(int width, int height, Point homeloc, String
+			// homeOr,List<Point> obstacles)
+		Environment en = new Environment(width, height, new Point(x, y), orientation, obstacles);
+		// public EnviroState(List<Point> dirts, List<Point> Agents, String AgentOr,
+		// boolean On)
+		EnviroState enState = new EnviroState(dirt, new Point(x, y), orientation, false);
+		System.out.println(en.height + ":" + en.width + "|" + en.homeloc.x + ":" + en.homeloc.y + ":" + en.homeOr);
+		for (Point p : en.obstacles) {
+			System.out.println(p.x + ":" + p.y);
+		}
+		System.out.println(enState.On + "|" + enState.Agent.x + ":" + enState.Agent.y + ":"
+				+ enState.AgentOr);
+		for (Point p : enState.dirts) {
+			System.out.println(p.x + ":" + p.y);
 		}
 	}
 
