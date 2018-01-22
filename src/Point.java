@@ -19,5 +19,11 @@ public class Point {
         this.y = y;
     }
     
+    public boolean equals(int x, int y){
+        if(x == this.x && y == this.y)  {
+            return true;
+        }
+        return false;
+    }
     
 }
