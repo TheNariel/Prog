@@ -19,13 +19,13 @@ public class EnviroState {
 	location of dirts */
     
     List<Point> dirts; 
-    List<Point> Agents;
+    Point Agent;
     String AgentOr;
     boolean On;
 
-    public EnviroState(List<Point> dirts, List<Point> Agents, String AgentOr, boolean On) {
+    public EnviroState(List<Point> dirts, Point Agent, String AgentOr, boolean On) {
         this.dirts = dirts;
-        this.Agents = Agents;
+        this.Agent = Agent;
         this.AgentOr = AgentOr;
         this.On = On;
     }
