@@ -25,5 +25,14 @@ public class Point {
         }
         return false;
     }
+    public boolean equals(Point p){
+        if(p.x == this.x && p.y == this.y)  {
+            return true;
+        }
+        return false;
+    }
+    public Point copy() {
+    	return new Point(x,y);
+    }
     
 }
