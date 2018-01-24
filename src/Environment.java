@@ -31,7 +31,9 @@ public class Environment {
 		this.homeOr = homeOr;
 		this.obstacles = obstacles;
 	}
-// check for proper coping of currentstat.dirts 
+
+	// check for proper coping of currentstat.dirts
+	// siye of the state space #ofdirt ^2 * 4* grid size.
 	public List<EnviroState> getNext(EnviroState currentState) {
 		List<EnviroState> nextStates = new ArrayList<EnviroState>();
 		EnviroState toAdd = checkOn(currentState);
@@ -67,9 +69,45 @@ public class Environment {
 
 	}
 
+	public List<stateAndTransition> getNextWitCost(EnviroState currentState,stateAndTransition parent) {
+		List<stateAndTransition> nextStates = new ArrayList<stateAndTransition>();
+		EnviroState toAdd = checkOn(currentState);
+		if (toAdd != null) {
+			nextStates.add(new stateAndTransition(0, toAdd,"on",parent));
+		} else {
+			toAdd = checkSuck(currentState);
+			if (toAdd != null) {
+				nextStates.add(new stateAndTransition(1, toAdd,"SUCK",parent));
+			} else {
+				toAdd = checkOff(currentState);
+				if (toAdd != null) {
+					nextStates.add(new stateAndTransition(0, toAdd,"OFF",parent));
+				} else {
+					toAdd = checkGO(currentState);
+					if (toAdd != null) {
+						nextStates.add(new stateAndTransition(2, toAdd,"GO",parent));
+					}
+					toAdd = checkTurnRight(currentState);
+					if (toAdd != null) {
+						nextStates.add(new stateAndTransition(3, toAdd,"TURN_RIGHT",parent));
+					}
+					toAdd = checkTurnLeft(currentState);
+					if (toAdd != null) {
+						nextStates.add(new stateAndTransition(3, toAdd,"TURN_LEFT",parent));
+					}
+				}
+
+			}
+		}
+
+		return nextStates;
+
+	}
+
 	private EnviroState checkOn(EnviroState currentState) {
 		if (!currentState.On) {
-			return new EnviroState(currentState.dirts, currentState.Agent.copy(), currentState.AgentOr, true);
+			return new EnviroState(currentState.dirts.subList(0, currentState.dirts.size()), currentState.Agent.copy(),
+					currentState.AgentOr, true);
 		}
 		return null;
 
@@ -78,7 +116,8 @@ public class Environment {
 	private EnviroState checkOff(EnviroState currentState) {
 		if (currentState.dirts.isEmpty()) {
 			if (currentState.Agent.equals(homeloc)) {
-				return new EnviroState(currentState.dirts, currentState.Agent.copy(), currentState.AgentOr, false);
+				return new EnviroState(currentState.dirts.subList(0, currentState.dirts.size()),
+						currentState.Agent.copy(), currentState.AgentOr, false);
 			}
 		}
 		return null;
@@ -100,7 +139,8 @@ public class Environment {
 		if (currentState.AgentOr.equals("SOUTH")) {
 			nextOrientation = "EAST";
 		}
-		return new EnviroState(currentState.dirts, currentState.Agent.copy(), nextOrientation, currentState.On);
+		return new EnviroState(currentState.dirts.subList(0, currentState.dirts.size()), currentState.Agent.copy(),
+				nextOrientation, currentState.On);
 	}
 
 	private EnviroState checkTurnRight(EnviroState currentState) {
@@ -118,7 +158,8 @@ public class Environment {
 		if (currentState.AgentOr.equals("SOUTH")) {
 			nextOrientation = "WEST";
 		}
-		return new EnviroState(currentState.dirts, currentState.Agent.copy(), nextOrientation, currentState.On);
+		return new EnviroState(currentState.dirts.subList(0, currentState.dirts.size()), currentState.Agent.copy(),
+				nextOrientation, currentState.On);
 	}
 
 	private EnviroState checkGO(EnviroState currentState) {
@@ -140,8 +181,8 @@ public class Environment {
 		if (currentState.AgentOr.equals("SOUTH")) {
 			yFuture--;
 		}
-		if (yFuture <= width || yFuture >= 1) {
-			if (xFuture <= height || xFuture >= 1) {
+		if (yFuture <= width && yFuture >= 1) {
+			if (xFuture <= height && xFuture >= 1) {
 				for (Point p : obstacles) {
 					if (p.equals(xFuture, yFuture)) {
 						valid = false;
@@ -157,8 +198,8 @@ public class Environment {
 			valid = false;
 		}
 		if (valid) {
-			return new EnviroState(currentState.dirts, new Point(xFuture, yFuture), currentState.AgentOr,
-					currentState.On);
+			return new EnviroState(currentState.dirts.subList(0, currentState.dirts.size()),
+					new Point(xFuture, yFuture), currentState.AgentOr, currentState.On);
 		} else {
 			return null;
 		}
@@ -167,21 +208,24 @@ public class Environment {
 
 	private EnviroState checkSuck(EnviroState currentState) {
 		List<Point> nextDirt = currentState.dirts;
+		int dirtToSuck=0;
 		boolean valid = false;
-		for (Point p : nextDirt) {
-			if (p.equals(currentState.Agent.x, currentState.Agent.y)) {
-				nextDirt.remove(p);
+		for (int p = 0;p<nextDirt.size();p++) {
+			if (nextDirt.get(p).equals(currentState.Agent.x, currentState.Agent.y)) {
+				dirtToSuck =p;
 				valid = true;
 				break;
 			}
 
 		}
 		if (valid) {
+			nextDirt.remove(dirtToSuck);
 			return new EnviroState(nextDirt, currentState.Agent.copy(), currentState.AgentOr, currentState.On);
 		} else {
 			return null;
 		}
 	}
+
 }
 
 /*

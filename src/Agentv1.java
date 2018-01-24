@@ -19,8 +19,8 @@ public class Agentv1 implements Agent {
 		 */
 		int x = -5, y = -5, width = -5, height = -5;
 		String orientation = "", type = "";
-		List<Point> obstacles = new ArrayList();
-		List<Point> dirt = new ArrayList();
+		List<Point> obstacles = new ArrayList<Point>();
+		List<Point> dirt = new ArrayList<Point>();
 		Pattern perceptNamePattern = Pattern.compile("\\(\\s*([^\\s]+).*");
 		for (String percept : percepts) {
 			Matcher perceptNameMatcher = perceptNamePattern.matcher(percept);
@@ -41,13 +41,15 @@ public class Agentv1 implements Agent {
 					}
 				}
 				if (perceptName.equals("ORIENTATION")) {
-					Matcher m = Pattern.compile("\\(\\s*ORIENTATION\\s+(NORTH|SOUTH|EAST|WEST)\\s*\\)").matcher(percept);
+					Matcher m = Pattern.compile("\\(\\s*ORIENTATION\\s+(NORTH|SOUTH|EAST|WEST)\\s*\\)")
+							.matcher(percept);
 					if (m.matches()) {
 						orientation = m.group(1);
 					}
 				}
 				if (perceptName.equals("AT")) {
-					Matcher m = Pattern.compile("\\(\\s*AT\\s+(DIRT|OBSTACLE)+\\s+([0-9]+)\\s+([0-9]+)\\s*\\)").matcher(percept);
+					Matcher m = Pattern.compile("\\(\\s*AT\\s+(DIRT|OBSTACLE)+\\s+([0-9]+)\\s+([0-9]+)\\s*\\)")
+							.matcher(percept);
 					if (m.matches()) {
 						type = m.group(1);
 						if (type.equals("DIRT")) {
@@ -71,11 +73,44 @@ public class Agentv1 implements Agent {
 		for (Point p : en.obstacles) {
 			System.out.println(p.x + ":" + p.y);
 		}
-		System.out.println(enState.On + "|" + enState.Agent.x + ":" + enState.Agent.y + ":"
-				+ enState.AgentOr);
+		System.out.println(enState.On + "|" + enState.Agent.x + ":" + enState.Agent.y + ":" + enState.AgentOr);
 		for (Point p : enState.dirts) {
 			System.out.println(p.x + ":" + p.y);
 		}
+		EnviroState goal = new EnviroState(new ArrayList<Point>(),enState.Agent.copy(),enState.AgentOr,false);
+		uniformCostSearch search = new uniformCostSearch(enState,goal, en);
+		System.out.println(search.start());
+		
+		/*
+		 * List<EnviroState> allSeen = new ArrayList<EnviroState>();
+		 * allSeen.add(enState); List<EnviroState> nextStates = new
+		 * ArrayList<EnviroState>(); List<EnviroState> nextStates2 = new
+		 * ArrayList<EnviroState>(); List<EnviroState> nextStates3 = new
+		 * ArrayList<EnviroState>(); System.out.println("initial State");
+		 * nextStates.addAll(en.getNext(enState));
+		 * System.out.println(enState.toString()); for (EnviroState e : nextStates) {
+		 * nextStates2.addAll(en.getNext(e)); } for (EnviroState e : nextStates2) {
+		 * nextStates3.addAll(en.getNext(e)); }
+		 * 
+		 * System.out.println("first layer"); for (EnviroState e : nextStates) {
+		 * System.out.println(e.toString()); if (!seen(allSeen, e)) allSeen.add(e); }
+		 * System.out.println("second layer"); for (EnviroState e : nextStates2) {
+		 * System.out.println(e.toString()); if (!seen(allSeen, e)) allSeen.add(e); }
+		 * System.out.println("thrid layer"); for (EnviroState e : nextStates3) {
+		 * System.out.println(e.toString()); if (!seen(allSeen, e)) allSeen.add(e); }
+		 * 
+		 * System.out.println("All seen"); for (EnviroState e : allSeen) {
+		 * System.out.println(e.toString()); }
+		 */
+
+	}
+
+	public boolean seen(List<EnviroState> allSeen, EnviroState newState) {
+		for (EnviroState e : allSeen) {
+			if (e.theSame(newState))
+				return true;
+		}
+		return false;
 	}
 
 	public String nextAction(Collection<String> percepts) {
