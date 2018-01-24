@@ -6,13 +6,13 @@ public class uniformCostSearch {
 
 	List<stateAndTransition> frontier = new ArrayList<stateAndTransition>();
 	List<String> path = new ArrayList<String>();
-	stateAndTransition root;
-	EnviroState goal;
-	Environment en;
+	stateAndTransition root; //transcost, envirostate, stringmov, statestringparent
+	EnviroState goal; //location of dirt, point agent, stringOr, boolean On
+	Environment en; //width, height, pointhomeloc, string homeOr, list of obstacles
 
 	public uniformCostSearch(EnviroState root, EnviroState goal, Environment en) {
 		this.goal = goal;
-		this.root = new stateAndTransition(0, root, "",null);
+		this.root = new stateAndTransition(0, root, "",null); //int transitionCost,EnviroState state,String movement,stateAndTransition parent
 		this.root.parent = null;
 		this.en = en;
 	}
