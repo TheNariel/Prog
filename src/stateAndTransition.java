@@ -1,13 +1,13 @@
 
 public class stateAndTransition {
 	EnviroState state;
-	int transitionCost;
+	int pathCost;
 	String movement;
 	stateAndTransition parent;
 	public stateAndTransition(int transitionCost,EnviroState state,String movement,stateAndTransition parent) {
 		
 		this.state = state;
-		this.transitionCost = transitionCost;
+		this.pathCost = transitionCost;
 		this.movement = movement;
 		this.parent = parent;
 	}
