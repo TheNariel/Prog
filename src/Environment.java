@@ -73,27 +73,27 @@ public class Environment {
 		List<stateAndTransition> nextStates = new ArrayList<stateAndTransition>();
 		EnviroState toAdd = checkOn(currentState);
 		if (toAdd != null) {
-			nextStates.add(new stateAndTransition(0, toAdd,"on",parent));
+			nextStates.add(new stateAndTransition(1+parent.pathCost, toAdd,"on",parent));
 		} else {
 			toAdd = checkSuck(currentState);
 			if (toAdd != null) {
-				nextStates.add(new stateAndTransition(1, toAdd,"SUCK",parent));
+				nextStates.add(new stateAndTransition(1+parent.pathCost, toAdd,"SUCK",parent));
 			} else {
 				toAdd = checkOff(currentState);
 				if (toAdd != null) {
-					nextStates.add(new stateAndTransition(0, toAdd,"OFF",parent));
+					nextStates.add(new stateAndTransition(1+parent.pathCost, toAdd,"OFF",parent));
 				} else {
 					toAdd = checkGO(currentState);
 					if (toAdd != null) {
-						nextStates.add(new stateAndTransition(2, toAdd,"GO",parent));
+						nextStates.add(new stateAndTransition(1+parent.pathCost, toAdd,"GO",parent));
 					}
 					toAdd = checkTurnRight(currentState);
 					if (toAdd != null) {
-						nextStates.add(new stateAndTransition(3, toAdd,"TURN_RIGHT",parent));
+						nextStates.add(new stateAndTransition(2+parent.pathCost, toAdd,"TURN_RIGHT",parent));
 					}
 					toAdd = checkTurnLeft(currentState);
 					if (toAdd != null) {
-						nextStates.add(new stateAndTransition(3, toAdd,"TURN_LEFT",parent));
+						nextStates.add(new stateAndTransition(2+parent.pathCost, toAdd,"TURN_LEFT",parent));
 					}
 				}
 
@@ -207,11 +207,12 @@ public class Environment {
 	}
 
 	private EnviroState checkSuck(EnviroState currentState) {
-		List<Point> nextDirt = currentState.dirts;
-		int dirtToSuck=0;
+		List<Point> nextDirt = new ArrayList<Point>();
+		nextDirt.addAll(currentState.dirts);
+		int dirtToSuck=0,i =nextDirt.size();
 		boolean valid = false;
-		for (int p = 0;p<nextDirt.size();p++) {
-			if (nextDirt.get(p).equals(currentState.Agent.x, currentState.Agent.y)) {
+		for (int p = 0;p<i;p++) {
+			if (nextDirt.get(0).equals(currentState.Agent.x, currentState.Agent.y)) {
 				dirtToSuck =p;
 				valid = true;
 				break;
