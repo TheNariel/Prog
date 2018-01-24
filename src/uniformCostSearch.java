@@ -44,10 +44,10 @@ public class uniformCostSearch {
 		frontier.sort(new Comparator<stateAndTransition>() {
 			@Override
 			public int compare(stateAndTransition s1, stateAndTransition s2) {
-				if (s1.transitionCost == s2.transitionCost) {
+				if (s1.pathCost == s2.pathCost) {
 					return 0;
 				}
-				return s1.transitionCost < s2.transitionCost ? -1 : 1;
+				return s1.pathCost < s2.pathCost ? -1 : 1;
 			}
 		});
 	}
