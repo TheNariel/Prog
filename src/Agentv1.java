@@ -1,10 +1,13 @@
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Agentv1 implements Agent {
+
+	Stack<String> path;
 
 	public void init(Collection<String> percepts) {
 		/*
@@ -65,21 +68,38 @@ public class Agentv1 implements Agent {
 
 		} // public Environment(int width, int height, Point homeloc, String
 			// homeOr,List<Point> obstacles)
-		Environment en = new Environment(width, height, new Point(x, y), orientation, obstacles);
+		Environment en = new Environment(width,height, new Point(1, 1), orientation, obstacles);
 		// public EnviroState(List<Point> dirts, List<Point> Agents, String AgentOr,
 		// boolean On)
 		EnviroState enState = new EnviroState(dirt, new Point(x, y), orientation, false);
+		System.out.println("size|home:");
 		System.out.println(en.height + ":" + en.width + "|" + en.homeloc.x + ":" + en.homeloc.y + ":" + en.homeOr);
+		System.out.println("obstacles:");
 		for (Point p : en.obstacles) {
 			System.out.println(p.x + ":" + p.y);
 		}
-		System.out.println(enState.On + "|" + enState.Agent.x + ":" + enState.Agent.y + ":" + enState.AgentOr);
+		System.out.println("dirts:");
 		for (Point p : enState.dirts) {
 			System.out.println(p.x + ":" + p.y);
 		}
-		EnviroState goal = new EnviroState(new ArrayList<Point>(),enState.Agent.copy(),enState.AgentOr,false);
-		uniformCostSearch search = new uniformCostSearch(enState,goal, en);
-		System.out.println(search.start());
+
+		System.out.println("agent initial info:");
+		System.out.println(enState.On + "|" + enState.Agent.x + ":" + enState.Agent.y + ":" + enState.AgentOr);
+		EnviroState goal = new EnviroState(new ArrayList<Point>(), enState.Agent, enState.AgentOr, false);
+		System.out.println(goal.toString());
+		uniformCostSearch search = new uniformCostSearch(enState, goal, en);
+		
+		System.out.println("rout:");
+		long startTime = System.nanoTime();
+		
+		path = search.start();
+		
+		long endTime   = System.nanoTime();		
+		long totalTime = endTime - startTime;
+		System.out.println(totalTime);
+		System.out.println("done lenght of path: "+path.size());
+		
+		
 		
 		/*
 		 * List<EnviroState> allSeen = new ArrayList<EnviroState>();
@@ -114,7 +134,12 @@ public class Agentv1 implements Agent {
 	}
 
 	public String nextAction(Collection<String> percepts) {
+		if (path != null) {
+			if (!path.empty()) {
+				return path.pop();
+			}
+		}
+		return "TURN_OFF";
 
-		return "GO";
 	}
 }

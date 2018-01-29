@@ -69,31 +69,31 @@ public class Environment {
 
 	}
 
-	public List<stateAndTransition> getNextWitCost(EnviroState currentState,stateAndTransition parent) {
+	public List<stateAndTransition> getNextWitCost(EnviroState currentState, stateAndTransition parent) {
 		List<stateAndTransition> nextStates = new ArrayList<stateAndTransition>();
 		EnviroState toAdd = checkOn(currentState);
 		if (toAdd != null) {
-			nextStates.add(new stateAndTransition(1+parent.pathCost, toAdd,"on",parent));
+			nextStates.add(new stateAndTransition(1 + parent.pathCost, toAdd, "TURN_ON", parent));
 		} else {
 			toAdd = checkSuck(currentState);
 			if (toAdd != null) {
-				nextStates.add(new stateAndTransition(1+parent.pathCost, toAdd,"SUCK",parent));
+				nextStates.add(new stateAndTransition(1 + parent.pathCost, toAdd, "SUCK", parent));
 			} else {
 				toAdd = checkOff(currentState);
 				if (toAdd != null) {
-					nextStates.add(new stateAndTransition(1+parent.pathCost, toAdd,"OFF",parent));
+					nextStates.add(new stateAndTransition(1 + parent.pathCost, toAdd, "TURN_OFF", parent));
 				} else {
 					toAdd = checkGO(currentState);
 					if (toAdd != null) {
-						nextStates.add(new stateAndTransition(1+parent.pathCost, toAdd,"GO",parent));
+						nextStates.add(new stateAndTransition(1 + parent.pathCost, toAdd, "GO", parent));
 					}
 					toAdd = checkTurnRight(currentState);
 					if (toAdd != null) {
-						nextStates.add(new stateAndTransition(2+parent.pathCost, toAdd,"TURN_RIGHT",parent));
+						nextStates.add(new stateAndTransition(1 + parent.pathCost, toAdd, "TURN_RIGHT", parent));
 					}
 					toAdd = checkTurnLeft(currentState);
 					if (toAdd != null) {
-						nextStates.add(new stateAndTransition(2+parent.pathCost, toAdd,"TURN_LEFT",parent));
+						nextStates.add(new stateAndTransition(1 + parent.pathCost, toAdd, "TURN_LEFT", parent));
 					}
 				}
 
@@ -116,8 +116,10 @@ public class Environment {
 	private EnviroState checkOff(EnviroState currentState) {
 		if (currentState.dirts.isEmpty()) {
 			if (currentState.Agent.equals(homeloc)) {
-				return new EnviroState(currentState.dirts.subList(0, currentState.dirts.size()),
-						currentState.Agent.copy(), currentState.AgentOr, false);
+				if (currentState.AgentOr.equals(homeOr)) {
+					return new EnviroState(currentState.dirts.subList(0, currentState.dirts.size()),
+							currentState.Agent.copy(), currentState.AgentOr, false);
+				}
 			}
 		}
 		return null;
@@ -209,11 +211,11 @@ public class Environment {
 	private EnviroState checkSuck(EnviroState currentState) {
 		List<Point> nextDirt = new ArrayList<Point>();
 		nextDirt.addAll(currentState.dirts);
-		int dirtToSuck=0,i =nextDirt.size();
+		int dirtToSuck = 0, i = nextDirt.size();
 		boolean valid = false;
-		for (int p = 0;p<i;p++) {
+		for (int p = 0; p < i; p++) {
 			if (nextDirt.get(0).equals(currentState.Agent.x, currentState.Agent.y)) {
-				dirtToSuck =p;
+				dirtToSuck = p;
 				valid = true;
 				break;
 			}
