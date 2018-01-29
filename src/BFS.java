@@ -1,4 +1,13 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
+/**
+ *
+ * @author javier
+ */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +20,7 @@ import java.util.List;
  *
  * @author javier
  */
-public class DFS {
+public class BFS {
 
     List<stateAndTransition> frontier = new ArrayList<stateAndTransition>(); //list of frontiers
     List<stateAndTransition> visitedNodes = new ArrayList<stateAndTransition>(); //list of visited nodes
@@ -20,7 +29,7 @@ public class DFS {
     EnviroState goal; //location of dirt, point agent, stringOr, boolean On
     Environment en; //width, height, pointhomeloc, string homeOr, list of obstacles
 
-    public DFS(EnviroState root, EnviroState goal, Environment en) {
+    public BFS(EnviroState root, EnviroState goal, Environment en) {
 
         this.goal = goal;
         this.root = new stateAndTransition(0, root, "", null); // (int transitionCost,EnviroState state,String movement,stateAndTransition parent) 
@@ -30,18 +39,17 @@ public class DFS {
 
     public List<String> start() {
         
-/* If GOAL?(S0) then return S
-   INSERT(N0,FRONTIER)
+ /* INSERT(N0,FRONTIER)
       Repeat:
         If EMPTY?(FRONTIER) then return failure
+        N= POP(FRONTIER)
         
-        N= POP(FRONTIER) (Expansion of N)
-        s= STATE(N)
-      For every state s’in SUCCESSORS(s)
+        s= STATE(N) (expansion on N)
+      If GOAL?(s) then return path or goal state
+        For every state s’in SUCCESSORS(s)
         Create a new node N’as a child of N
-        If GOAL?(s’) then return path or goal state
         INSERT(N’,FRONTIER) */
-        
+          
         frontier.add(root); //add the root to the first position of the frontier
         stateAndTransition curr; //current state
         while (!frontier.isEmpty()) {
@@ -50,7 +58,7 @@ public class DFS {
             //method "thesame" method in envirostate 
                  /* if (goal.theSame()){
                  }*/ 
-   
+           
             visitedNodes.add(curr); //add the root to the visitedNodes
             if (goal.equals(curr.state)) {
                 return getPath(curr);
@@ -74,3 +82,4 @@ public class DFS {
   
         
 }
+
