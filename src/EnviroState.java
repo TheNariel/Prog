@@ -43,12 +43,13 @@ public class EnviroState {
 			return false;
 		if (this.dirts.size() != comp.dirts.size()) {
 			return false;
-		} else {
+		} 
+		/*else {
 			List<Point> temp = this.dirts.subList(0, this.dirts.size());
 			temp.retainAll(comp.dirts);
 			if (temp.size() != comp.dirts.size())
 				return false;
-		}
+		}*/
 
 		return true;
 	}
