@@ -34,31 +34,32 @@ public class Environment {
 
 	// check for proper coping of currentstat.dirts
 	// siye of the state space #ofdirt ^2 * 4* grid size.
-	public List<EnviroState> getNext(EnviroState currentState) {
-		List<EnviroState> nextStates = new ArrayList<EnviroState>();
+	
+	public List<stateAndTransition> getNext(EnviroState currentState, stateAndTransition parent) {
+		List<stateAndTransition> nextStates = new ArrayList<stateAndTransition>();
 		EnviroState toAdd = checkOn(currentState);
 		if (toAdd != null) {
-			nextStates.add(toAdd);
+			nextStates.add(new stateAndTransition(0, toAdd, "TURN_ON", parent));
 		} else {
 			toAdd = checkSuck(currentState);
 			if (toAdd != null) {
-				nextStates.add(toAdd);
+				nextStates.add(new stateAndTransition(0, toAdd, "SUCK", parent));
 			} else {
 				toAdd = checkOff(currentState);
 				if (toAdd != null) {
-					nextStates.add(toAdd);
+					nextStates.add(new stateAndTransition(0, toAdd, "TURN_OFF", parent));
 				} else {
 					toAdd = checkGO(currentState);
 					if (toAdd != null) {
-						nextStates.add(toAdd);
+						nextStates.add(new stateAndTransition(0, toAdd, "GO", parent));
 					}
 					toAdd = checkTurnRight(currentState);
 					if (toAdd != null) {
-						nextStates.add(toAdd);
+						nextStates.add(new stateAndTransition(0, toAdd, "TURN_RIGHT", parent));
 					}
 					toAdd = checkTurnLeft(currentState);
 					if (toAdd != null) {
-						nextStates.add(toAdd);
+						nextStates.add(new stateAndTransition(0, toAdd, "TURN_LEFT", parent));
 					}
 				}
 
@@ -68,7 +69,6 @@ public class Environment {
 		return nextStates;
 
 	}
-
 	public List<stateAndTransition> getNextWitCost(EnviroState currentState, stateAndTransition parent) {
 		List<stateAndTransition> nextStates = new ArrayList<stateAndTransition>();
 		EnviroState toAdd = checkOn(currentState);

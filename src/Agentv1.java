@@ -91,55 +91,23 @@ public class Agentv1 implements Agent {
 		EnviroState goal = new EnviroState(new ArrayList<Point>(), enState.Agent, enState.AgentOr, false);
 		System.out.println("goal: ");
 		System.out.println(goal.toString());
-<<<<<<< HEAD
-		DFS searchDFS = new DFS(enState, goal, en);
-                //BFS searchBFS = new BFS(enState, goal, en);
 		
-		System.out.println("rout:");
-		long startTime = System.nanoTime();
-		
-		path = searchDFS.start();
-                //path = searchBFS.start();
-
-		
-		long endTime   = System.nanoTime();		
-=======
+		//BFS search = new BFS(enState, goal, en);
+		DFS search = new DFS(enState, goal, en);
 		//uniformCostSearch search = new uniformCostSearch(enState, goal, en);
-
-		AStarSearch search = new AStarSearch(enState, goal, en);
+		//AStarSearch search = new AStarSearch(enState, goal, en);
+		
 		long startTime = System.nanoTime();
 
 		path = search.start();
 
 		long endTime = System.nanoTime();
->>>>>>> 019d77a77771e76dde96614a4375211a8033c8af
 		long totalTime = endTime - startTime;
 		System.out.println(totalTime);
 		if (path != null) {
 			System.out.println("Lenght of path: " + path.size());
 		}
 
-		/*
-		 * List<EnviroState> allSeen = new ArrayList<EnviroState>();
-		 * allSeen.add(enState); List<EnviroState> nextStates = new
-		 * ArrayList<EnviroState>(); List<EnviroState> nextStates2 = new
-		 * ArrayList<EnviroState>(); List<EnviroState> nextStates3 = new
-		 * ArrayList<EnviroState>(); System.out.println("initial State");
-		 * nextStates.addAll(en.getNext(enState));
-		 * System.out.println(enState.toString()); for (EnviroState e : nextStates) {
-		 * nextStates2.addAll(en.getNext(e)); } for (EnviroState e : nextStates2) {
-		 * nextStates3.addAll(en.getNext(e)); }
-		 * 
-		 * System.out.println("first layer"); for (EnviroState e : nextStates) {
-		 * System.out.println(e.toString()); if (!seen(allSeen, e)) allSeen.add(e); }
-		 * System.out.println("second layer"); for (EnviroState e : nextStates2) {
-		 * System.out.println(e.toString()); if (!seen(allSeen, e)) allSeen.add(e); }
-		 * System.out.println("thrid layer"); for (EnviroState e : nextStates3) {
-		 * System.out.println(e.toString()); if (!seen(allSeen, e)) allSeen.add(e); }
-		 * 
-		 * System.out.println("All seen"); for (EnviroState e : allSeen) {
-		 * System.out.println(e.toString()); }
-		 */
 
 	}
 
