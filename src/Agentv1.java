@@ -91,8 +91,9 @@ public class Agentv1 implements Agent {
 		EnviroState goal = new EnviroState(new ArrayList<Point>(), enState.Agent, enState.AgentOr, false);
 		System.out.println("goal: ");
 		System.out.println(goal.toString());
-		uniformCostSearch search = new uniformCostSearch(enState, goal, en);
+		//uniformCostSearch search = new uniformCostSearch(enState, goal, en);
 
+		AStarSearch search = new AStarSearch(enState, goal, en);
 		long startTime = System.nanoTime();
 
 		path = search.start();

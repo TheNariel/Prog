@@ -55,10 +55,10 @@ public class AStarSearch {
 				System.out.println();
 				return getPath(curr);
 			}
-
-			for (stateAndTransition successor : en.getNextWitCost(curr.state, curr)) {
+			stateExpancion++;
+			for (stateAndTransition successor : en.getNextAStar(curr.state, curr)) {
 				boolean toAdd = true;
-				stateExpancion++;
+				
 				for (stateAndTransition see : seen) {
 					if (see.state.theSame(successor.state)) {
 						toAdd = false;

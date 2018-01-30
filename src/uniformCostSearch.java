@@ -44,21 +44,23 @@ public class uniformCostSearch {
 		while (!frontier.isEmpty()) {
 			if (maxFrontier < frontier.size())
 				maxFrontier = frontier.size();
+			
 			curr = frontier.poll();
-			// System.out.println(curr.toString());
 			seen.add(curr);
-			boolean goalFound = true;
-			goalFound = curr.state.theSame(goal);
-			if (goalFound) {
+
+			if (curr.state.theSame(goal)) {
 				System.out.println("Succes");
 				System.out.printf("Max frontier size: %d | State Expancion : %d", maxFrontier, stateExpancion);
 				System.out.println();
 				return getPath(curr);
 			}
-
-			for (stateAndTransition successor : en.getNextWitCost(curr.state, curr)) {
+			
+			
+			stateExpancion++;
+			List<stateAndTransition> successors=en.getNextWitCost(curr.state, curr);
+			for (stateAndTransition successor :successors ) {
 				boolean toAdd = true;
-				stateExpancion++;
+				
 				for (stateAndTransition see : seen) {
 					if (see.state.theSame(successor.state)) {
 						toAdd = false;

@@ -104,35 +104,77 @@ public class Environment {
 
 	}
 
+	public List<stateAndTransition> getNextAStar(EnviroState currentState, stateAndTransition parent) {
+		int eval = evaluateState(currentState);
+		List<stateAndTransition> nextStates = new ArrayList<stateAndTransition>();
+		EnviroState toAdd = checkOn(currentState);
+		if (toAdd != null) {
+			nextStates.add(new stateAndTransition(1 + parent.pathCost + eval, toAdd, "TURN_ON", parent));
+		} else {
+			toAdd = checkSuck(currentState);
+			if (toAdd != null) {
+				nextStates.add(new stateAndTransition(1 + parent.pathCost + eval, toAdd, "SUCK", parent));
+			} else {
+				toAdd = checkOff(currentState);
+				if (toAdd != null) {
+					nextStates.add(new stateAndTransition(1 + parent.pathCost + eval, toAdd, "TURN_OFF", parent));
+				} else {
+					toAdd = checkGO(currentState);
+					if (toAdd != null) {
+						nextStates.add(new stateAndTransition(1 + parent.pathCost + eval, toAdd, "GO", parent));
+					}
+					toAdd = checkTurnRight(currentState);
+					if (toAdd != null) {
+						nextStates.add(new stateAndTransition(1 + parent.pathCost + eval, toAdd, "TURN_RIGHT", parent));
+					}
+					toAdd = checkTurnLeft(currentState);
+					if (toAdd != null) {
+						nextStates.add(new stateAndTransition(1 + parent.pathCost + eval, toAdd, "TURN_LEFT", parent));
+					}
+				}
+
+			}
+		}
+
+		return nextStates;
+
+	}
+
 	public int evaluateState(EnviroState currentState) {
 		int homeDistance = this.homeloc.manhattanDistance(currentState.Agent);
 		int dirtDistance = Integer.MAX_VALUE;
 		int temp = 0;
+		Point closest = null, tempClosest = null;
 		for (Point d : currentState.dirts) {
 			temp = d.manhattanDistance(currentState.Agent);
 			if (temp < dirtDistance)
 				dirtDistance = temp;
+			closest = d;
 		}
-		int dist=0;
-		Point next = null;
+		int dist = 0;
+		List<Point> tempDirts = new ArrayList<Point>();
+		tempDirts.addAll(currentState.dirts);
+		int distDirts = 0;
 		List<Point> done = new ArrayList<Point>();
-		for (Point d : currentState.dirts) {
-			done.add(d);
-			dirtDistance = Integer.MAX_VALUE;
-			for (Point dd : currentState.dirts) {
+		while (!tempDirts.isEmpty()) {
+			done.add(closest);
+			distDirts = Integer.MAX_VALUE;
+			temp = 0;
+			for (Point dd : tempDirts) {
 				if (!done.contains(dd))
-					temp = d.manhattanDistance(dd);
-				if (temp < dirtDistance) {
-					dirtDistance = temp;
-					next = dd;
+					temp = closest.manhattanDistance(dd);
+				if (temp < distDirts) {
+					distDirts = temp;
+					tempClosest = dd;
 				}
-				dist+=dirtDistance;
-				done.add(next);
 			}
+			dist += distDirts;
+			tempDirts.remove(tempClosest);
+			closest = tempClosest;
 
 		}
 
-		return homeDistance + dirtDistance;
+		return homeDistance + dirtDistance + dist;
 
 	}
 
@@ -215,8 +257,8 @@ public class Environment {
 		if (currentState.AgentOr.equals("SOUTH")) {
 			yFuture--;
 		}
-		if (yFuture <= width && yFuture >= 1) {
-			if (xFuture <= height && xFuture >= 1) {
+		if (yFuture <= height && yFuture >= 1) {
+			if (xFuture <= width && xFuture >= 1) {
 				for (Point p : obstacles) {
 					if (p.equals(xFuture, yFuture)) {
 						valid = false;
