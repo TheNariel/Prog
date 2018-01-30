@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
-public class uniformCostSearch {
+public class AStarSearch {
 
 	List<stateAndTransition> seen = new ArrayList<stateAndTransition>();
 	PriorityQueue<stateAndTransition> frontier;
@@ -14,7 +14,7 @@ public class uniformCostSearch {
 	Environment en; // width, height, pointhomeloc, string homeOr, list of obstacles
 	int maxFrontier = 0, stateExpancion = 0;
 
-	public uniformCostSearch(EnviroState root, EnviroState goal, Environment en) {
+	public AStarSearch(EnviroState root, EnviroState goal, Environment en) {
 		this.goal = goal;
 		this.root = new stateAndTransition(0, root, "", null); // int transitionCost,EnviroState state,String
 																// movement,stateAndTransition parent
@@ -44,21 +44,19 @@ public class uniformCostSearch {
 		while (!frontier.isEmpty()) {
 			if (maxFrontier < frontier.size())
 				maxFrontier = frontier.size();
-			
 			curr = frontier.poll();
+			// System.out.println(curr.toString());
 			seen.add(curr);
-
-			if (curr.state.theSame(goal)) {
+			boolean goalFound = true;
+			goalFound = curr.state.theSame(goal);
+			if (goalFound) {
 				System.out.println("Succes");
 				System.out.printf("Max frontier size: %d | State Expancion : %d", maxFrontier, stateExpancion);
 				System.out.println();
 				return getPath(curr);
 			}
-			
-			
 			stateExpancion++;
-			List<stateAndTransition> successors=en.getNextWitCost(curr.state, curr);
-			for (stateAndTransition successor :successors ) {
+			for (stateAndTransition successor : en.getNextAStar(curr.state, curr)) {
 				boolean toAdd = true;
 				
 				for (stateAndTransition see : seen) {
@@ -96,13 +94,4 @@ public class uniformCostSearch {
 		}
 		return path;
 	}
-
-	/*
-	 * public void sortFront() { frontier.sort(new Comparator<stateAndTransition>()
-	 * {
-	 * 
-	 * @Override public int compare(stateAndTransition s1, stateAndTransition s2) {
-	 * if (s1.pathCost == s2.pathCost) { return 0; } return s1.pathCost <
-	 * s2.pathCost ? -1 : 1; } }); }
-	 */
 }
