@@ -87,12 +87,15 @@ public class Agentv1 implements Agent {
 		System.out.println(enState.On + "|" + enState.Agent.x + ":" + enState.Agent.y + ":" + enState.AgentOr);
 		EnviroState goal = new EnviroState(new ArrayList<Point>(), enState.Agent, enState.AgentOr, false);
 		System.out.println(goal.toString());
-		uniformCostSearch search = new uniformCostSearch(enState, goal, en);
+		DFS searchDFS = new DFS(enState, goal, en);
+                //BFS searchBFS = new BFS(enState, goal, en);
 		
 		System.out.println("rout:");
 		long startTime = System.nanoTime();
 		
-		path = search.start();
+		path = searchDFS.start();
+                //path = searchBFS.start();
+
 		
 		long endTime   = System.nanoTime();		
 		long totalTime = endTime - startTime;
