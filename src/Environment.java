@@ -305,25 +305,3 @@ public class Environment {
 
 }
 
-/*
- * if(currentState = (0, 0) North and East movements else
- * System.out.printf('Illegal movement'); if(currentState = (width, 0) North and
- * west movements else System.out.printf('Illegal movement'); if(currentState =
- * (height, 0) South and East movements else System.out.printf('Illegal
- * movement'); if(currentState = (width, heigth) West and south movements else
- * System.out.printf('Illegal movement');
- * 
- * 
- * }* /
- * 
- * } }
- * 
- * /*successor states: Go action: Position changes Turn right/left orientation
- * changes Turn on/off on/off Suck action: dirt is removed from a location legal
- * moves: Go action: when you do not hit a wall
- * 
- * Turn right/left only when the robot is on turn on/off only run on if robot is
- * off/only turn off is robot is on should only turn off when robot is back at
- * home location, when all dirt has been removed(GOAL) suck action when there is
- * dirt on robots location
- */

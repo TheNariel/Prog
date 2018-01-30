@@ -40,9 +40,6 @@ public class BFS {
 
             seen.add(curr); //add the root to the visitedNodes
             if (goal.theSame(curr.state)) {
-            	System.out.println("Succes");
-				System.out.printf("Max frontier size: %d | State Expancion : %d", maxFrontier, stateExpancion);
-				System.out.println();
                 return getPath(curr);
             }
 			stateExpancion++;

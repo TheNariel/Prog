@@ -50,9 +50,7 @@ public class AStarSearch {
 			boolean goalFound = true;
 			goalFound = curr.state.theSame(goal);
 			if (goalFound) {
-				System.out.println("Succes");
-				System.out.printf("Max frontier size: %d | State Expancion : %d", maxFrontier, stateExpancion);
-				System.out.println();
+			
 				return getPath(curr);
 			}
 			stateExpancion++;
@@ -81,8 +79,6 @@ public class AStarSearch {
 
 		}
 
-		System.out.println("FAIL");
-		System.out.printf("Max frontier size: %d | State Expancion : %d", maxFrontier, stateExpancion);
 		return null;
 	}
 

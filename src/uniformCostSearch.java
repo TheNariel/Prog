@@ -49,9 +49,6 @@ public class uniformCostSearch {
 			seen.add(curr);
 
 			if (curr.state.theSame(goal)) {
-				System.out.println("Succes");
-				System.out.printf("Max frontier size: %d | State Expancion : %d", maxFrontier, stateExpancion);
-				System.out.println();
 				return getPath(curr);
 			}
 			
@@ -83,8 +80,6 @@ public class uniformCostSearch {
 
 		}
 
-		System.out.println("FAIL");
-		System.out.printf("Max frontier size: %d | State Expancion : %d", maxFrontier, stateExpancion);
 		return null;
 	}
 
@@ -97,12 +92,5 @@ public class uniformCostSearch {
 		return path;
 	}
 
-	/*
-	 * public void sortFront() { frontier.sort(new Comparator<stateAndTransition>()
-	 * {
-	 * 
-	 * @Override public int compare(stateAndTransition s1, stateAndTransition s2) {
-	 * if (s1.pathCost == s2.pathCost) { return 0; } return s1.pathCost <
-	 * s2.pathCost ? -1 : 1; } }); }
-	 */
+
 }
