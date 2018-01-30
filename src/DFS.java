@@ -22,7 +22,7 @@ public class DFS {
 	stateAndTransition root; // transcost, envirostate, stringmov, statestringparent
 	EnviroState goal; // location of dirt, point agent, stringOr, boolean On
 	Environment en; // width, height, pointhomeloc, string homeOr, list of obstacles
-	int stateExpancion = 0;
+	int maxFrontier = 0, stateExpancion = 0;
 	Stack<String> path = new Stack<String>();
 
 	public DFS(EnviroState root, EnviroState goal, Environment en) {
@@ -39,10 +39,16 @@ public class DFS {
 		frontier.add(root); // add the root to the first position of the frontier
 		stateAndTransition curr; // current state
 		while (!frontier.isEmpty()) {
+			if (maxFrontier < frontier.size())
+				maxFrontier = frontier.size();
+			
 			curr = frontier.remove(0);
 			seen.add(curr);
 
 			if (goal.theSame(curr.state)) {
+				System.out.println("Succes");
+				System.out.printf("Max frontier size: %d | State Expancion : %d", maxFrontier, stateExpancion);
+				System.out.println();
 				return getPath(curr);
 			}
 
