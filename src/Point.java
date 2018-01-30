@@ -31,6 +31,9 @@ public class Point {
         }
         return false;
     }
+    public int manhattanDistance(Point p){
+        return (Math.max(p.x, this.x)-Math.min(p.x, this.x))+(Math.max(p.y, this.y)-Math.min(p.y, this.y));
+    }
     public Point copy() {
     	return new Point(x,y);
     }

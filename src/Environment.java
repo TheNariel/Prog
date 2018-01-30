@@ -104,6 +104,38 @@ public class Environment {
 
 	}
 
+	public int evaluateState(EnviroState currentState) {
+		int homeDistance = this.homeloc.manhattanDistance(currentState.Agent);
+		int dirtDistance = Integer.MAX_VALUE;
+		int temp = 0;
+		for (Point d : currentState.dirts) {
+			temp = d.manhattanDistance(currentState.Agent);
+			if (temp < dirtDistance)
+				dirtDistance = temp;
+		}
+		int dist=0;
+		Point next = null;
+		List<Point> done = new ArrayList<Point>();
+		for (Point d : currentState.dirts) {
+			done.add(d);
+			dirtDistance = Integer.MAX_VALUE;
+			for (Point dd : currentState.dirts) {
+				if (!done.contains(dd))
+					temp = d.manhattanDistance(dd);
+				if (temp < dirtDistance) {
+					dirtDistance = temp;
+					next = dd;
+				}
+				dist+=dirtDistance;
+				done.add(next);
+			}
+
+		}
+
+		return homeDistance + dirtDistance;
+
+	}
+
 	private EnviroState checkOn(EnviroState currentState) {
 		if (!currentState.On) {
 			return new EnviroState(currentState.dirts.subList(0, currentState.dirts.size()), currentState.Agent.copy(),

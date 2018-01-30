@@ -68,39 +68,42 @@ public class Agentv1 implements Agent {
 
 		} // public Environment(int width, int height, Point homeloc, String
 			// homeOr,List<Point> obstacles)
-		Environment en = new Environment(width,height, new Point(1, 1), orientation, obstacles);
+		Environment en = new Environment(width, height, new Point(x, y), orientation, obstacles);
 		// public EnviroState(List<Point> dirts, List<Point> Agents, String AgentOr,
 		// boolean On)
 		EnviroState enState = new EnviroState(dirt, new Point(x, y), orientation, false);
 		System.out.println("size|home:");
-		System.out.println(en.height + ":" + en.width + "|" + en.homeloc.x + ":" + en.homeloc.y + ":" + en.homeOr);
-		System.out.println("obstacles:");
-		for (Point p : en.obstacles) {
-			System.out.println(p.x + ":" + p.y);
-		}
-		System.out.println("dirts:");
-		for (Point p : enState.dirts) {
-			System.out.println(p.x + ":" + p.y);
-		}
+		System.out.println(en.width + ":" + en.height + "|" + en.homeloc.x + ":" + en.homeloc.y + ":" + en.homeOr);
+		System.out.print("obstacles: ");
+		/*
+		 * for (Point p : en.obstacles) { System.out.println(p.x + ":" + p.y); }
+		 */
 
+		System.out.println(en.obstacles.size());
+		
+		System.out.print("dirts: ");
+		/*
+		 * for (Point p : enState.dirts) { System.out.println(p.x + ":" + p.y); }
+		 */
+		System.out.println(enState.dirts.size());
 		System.out.println("agent initial info:");
 		System.out.println(enState.On + "|" + enState.Agent.x + ":" + enState.Agent.y + ":" + enState.AgentOr);
 		EnviroState goal = new EnviroState(new ArrayList<Point>(), enState.Agent, enState.AgentOr, false);
+		System.out.println("goal: ");
 		System.out.println(goal.toString());
 		uniformCostSearch search = new uniformCostSearch(enState, goal, en);
-		
-		System.out.println("rout:");
+
 		long startTime = System.nanoTime();
-		
+
 		path = search.start();
-		
-		long endTime   = System.nanoTime();		
+
+		long endTime = System.nanoTime();
 		long totalTime = endTime - startTime;
 		System.out.println(totalTime);
-		System.out.println("done lenght of path: "+path.size());
-		
-		
-		
+		if (path != null) {
+			System.out.println("Lenght of path: " + path.size());
+		}
+
 		/*
 		 * List<EnviroState> allSeen = new ArrayList<EnviroState>();
 		 * allSeen.add(enState); List<EnviroState> nextStates = new
