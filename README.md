@@ -1,4 +1,4 @@
-<b>Project for Artificial intelligence class at University of Reykjavik. </b>
+# Project for Artificial intelligence class at University of Reykjavik.
 
 Assighment "prog1"
 
