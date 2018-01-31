@@ -1,4 +1,5 @@
-Project for Artificial intelligence class at University of Reykjavik. 
+<b>Project for Artificial intelligence class at University of Reykjavik. </b>
+
 Assighment "prog1"
 
 Problem DescriptionFind a good plan for the vacuum cleaner agent. The environment is very similar to the one in thefirst lab: It is a rectangular grid of cells each of which may contain dirt. Only now the grid may alsocontain obstacles. The agent is located in this grid and facing in one of the four directions: north,south, east or west.Here is a link to an example of what the environment might look like.The agent can execute the following actions:
